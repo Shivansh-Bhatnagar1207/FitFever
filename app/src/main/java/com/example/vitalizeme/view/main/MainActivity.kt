@@ -1,4 +1,4 @@
-package com.example.vitalizeme.view
+package com.example.vitalizeme.view.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

@@ -43,6 +43,9 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.fragment)
     val paging_version = "3.3.6"
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.firebase:firebase-messaging:25.0.0")
