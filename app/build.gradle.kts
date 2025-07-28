@@ -36,9 +36,13 @@ android {
         jvmTarget = "11"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
     viewBinding{
         enable = true
     }
+
 }
 
 dependencies {
@@ -46,6 +50,10 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.fragment)
+    implementation ("com.google.firebase:firebase-auth:24.0.0")
+    implementation ("com.google.android.gms:play-services-auth:21.4.0")
+    implementation("com.google.firebase:firebase-messaging:25.0.0")
+
     val paging_version = "3.3.6"
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.firebase:firebase-messaging:25.0.0")

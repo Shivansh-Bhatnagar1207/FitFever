@@ -2,4 +2,6 @@
     <string name="app_name">FitFever</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="webClientId">875058015758–9bfpqahs9f5m26dk9lgqv09rrkns1drt.apps.googleusercontent.com</string>
 </resources>
