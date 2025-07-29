@@ -1,5 +1,6 @@
 package com.example.vitalizeme.view.auth
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -10,6 +11,7 @@ import com.example.vitalizeme.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var binding : ActivityAuthBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,9 +22,14 @@ class AuthActivity : AppCompatActivity() {
 
         val navController = navHostFragment.navController
 
+        val start = intent.getStringExtra("start")
 
         setContentView(binding.root)
 
+        when(start){
+            "login" -> navController.navigate(R.id.login)
+            "user" -> navController.navigate(R.id.userInfo)
+        }
 
     }
 }

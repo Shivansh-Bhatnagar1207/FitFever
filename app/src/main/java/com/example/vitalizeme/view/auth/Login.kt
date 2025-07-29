@@ -1,7 +1,9 @@
 package com.example.vitalizeme.view.auth
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Login : Fragment() {
 
@@ -27,19 +30,39 @@ class Login : Fragment() {
 
 
     private fun firebaseAuthWithGoogle(idToken: String?) {
-        val credientials = GoogleAuthProvider.getCredential(idToken, null)
-        firebaseAuth.signInWithCredential(credientials).addOnCompleteListener { task ->
+        val credentials = GoogleAuthProvider.getCredential(idToken, null)
+        firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val intent = Intent(context, MainActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
+                val user = firebaseAuth.currentUser
+                val userId = user?.uid
+
+                val db = FirebaseFirestore.getInstance()
+                db.collection("Users_data").document(userId!!).get()
+                    .addOnSuccessListener { doc ->
+                        if (doc.exists()) {
+                            // Profile exists —> go to MainActivity
+                            val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
+                            sp.edit().putBoolean("isComplete", true).apply()
+
+                            startActivity(Intent(requireContext(), MainActivity::class.java))
+                        } else {
+                            // Profile missing —> go to UserInfo
+                            val intent = Intent(requireContext(), AuthActivity::class.java)
+                            intent.putExtra("start", "userInfo")
+                            startActivity(intent)
+                        }
+                        requireActivity().finish()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Error checking user info", Toast.LENGTH_SHORT)
+                            .show()
+                    }
             } else {
-                Toast.makeText(context, "something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +74,7 @@ class Login : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater)
-
+        Log.d("CurrentUser", "${firebaseAuth.currentUser} ")
         binding.loginbtn.setOnClickListener {
             val email = binding.etemail.text.toString()
             val password = binding.etpassword.text.toString()
@@ -94,9 +117,9 @@ class Login : Fragment() {
                 e.printStackTrace()
             }
         }
-            binding.magicbtn.setOnClickListener {
-                clientLauncher.launch(googleSignInClient.signInIntent)
-            }
+        binding.magicbtn.setOnClickListener {
+            clientLauncher.launch(googleSignInClient.signInIntent)
+        }
 
 
 

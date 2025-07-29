@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".view.auth.UserInfo">
+    tools:context=".view.UserActivity">
 
 
     <RelativeLayout
