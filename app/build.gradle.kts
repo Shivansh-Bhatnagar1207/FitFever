@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.firebase.firestore)
 
     val paging_version = "3.3.6"
     implementation("androidx.core:core-splashscreen:1.0.1")

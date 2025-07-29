@@ -49,7 +49,7 @@ class SignUp : Fragment() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             findNavController().navigate(R.id.action_signUp_to_userInfo)
-                            requireActivity().finish()
+                            requireActivity()
                         } else {
                             Toast.makeText(context, "Something Went Wrong", Toast.LENGTH_SHORT)
                                 .show()
