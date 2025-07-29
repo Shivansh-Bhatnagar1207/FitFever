@@ -32,25 +32,15 @@ class Login : Fragment() {
             if (task.isSuccessful) {
                 val intent = Intent(context, MainActivity::class.java)
                 startActivity(intent)
+                requireActivity().finish()
             } else {
                 Toast.makeText(context, "something went wrong", Toast.LENGTH_SHORT).show()
             }
         }
 
-        var clientLauncher = registerForActivityResult(
-            ActivityResultContracts
-                .StartActivityForResult()
-        ) { result ->
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                val account = task.getResult(java.lang.Exception::class.java)
-                firebaseAuthWithGoogle(account.idToken)
-            } catch (e: ApiException) {
-                e.printStackTrace()
-            }
-        }
 
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
@@ -82,25 +72,35 @@ class Login : Fragment() {
                     }
             }
 
+        }
+        binding.signupLink.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_signUp)
+        }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.webClientId))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
-            binding.signupLink.setOnClickListener {
-                findNavController().navigate(R.id.action_login_to_signUp)
+        var clientLauncher = registerForActivityResult(
+            ActivityResultContracts
+                .StartActivityForResult()
+        ) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(java.lang.Exception::class.java)
+                firebaseAuthWithGoogle(account.idToken)
+            } catch (e: ApiException) {
+                e.printStackTrace()
             }
-
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.webClientId))
-                .requestEmail()
-                .build()
-            googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-
-
+        }
             binding.magicbtn.setOnClickListener {
                 clientLauncher.launch(googleSignInClient.signInIntent)
             }
-        }
 
 
 
         return binding.root
     }
+
 }

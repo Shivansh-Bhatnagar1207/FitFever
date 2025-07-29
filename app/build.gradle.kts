@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
         id("kotlin-kapt")
         id("com.google.dagger.hilt.android")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -53,6 +54,9 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth:24.0.0")
     implementation ("com.google.android.gms:play-services-auth:21.4.0")
     implementation("com.google.firebase:firebase-messaging:25.0.0")
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     val paging_version = "3.3.6"
     implementation("androidx.core:core-splashscreen:1.0.1")

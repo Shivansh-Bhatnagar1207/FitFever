@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_graph"
-    app:startDestination="@id/login">
+    app:startDestination="@id/userInfo">
 
     <fragment
         android:id="@+id/login"
@@ -22,5 +22,13 @@
         <action
             android:id="@+id/action_signUp_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_signUp_to_userInfo"
+            app:destination="@id/userInfo" />
     </fragment>
+    <fragment
+        android:id="@+id/userInfo"
+        android:name="com.example.vitalizeme.view.auth.UserInfo"
+        android:label="fragment_user_info"
+        tools:layout="@layout/fragment_user_info" />
 </navigation>
