@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.vitalizeme.databinding.ActivityOnboardingBinding
 import com.example.vitalizeme.view.auth.AuthActivity
+import com.example.vitalizeme.view.auth.UserActivity
 import com.example.vitalizeme.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
@@ -32,14 +33,11 @@ class onboarding : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     startActivity(
-                        Intent(this, AuthActivity::class.java).putExtra(
-                            "start",
-                            "userInfo"
-                        )
+                        Intent(this, UserActivity::class.java)
                     )
                 }
             } else {
-                startActivity(Intent(this, AuthActivity::class.java).putExtra("start", "login"))
+                startActivity(Intent(this, AuthActivity::class.java))
             }
             finish()
         }

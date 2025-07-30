@@ -5,5 +5,7 @@
     <color name="accent">#FEEE91</color>
     <color name="secondary">#FFBD73</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#D12626</color>
+    <color name="green">#208A20</color>
     <color name="background">#F5F3F8</color>
 </resources>
