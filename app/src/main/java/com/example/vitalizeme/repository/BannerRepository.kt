@@ -1,4 +1,4 @@
-package com.example.vitalizeme.viewmodel
+package com.example.vitalizeme.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

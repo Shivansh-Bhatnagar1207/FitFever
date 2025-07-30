@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vitalizeme.R
 import com.example.vitalizeme.databinding.FragmentLoginBinding
+import com.example.vitalizeme.model.Users
 import com.example.vitalizeme.view.main.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,38 +30,95 @@ class Login : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
 
+//    private fun firebaseAuthWithGoogle(idToken: String?) {
+//        val credentials = GoogleAuthProvider.getCredential(idToken, null)
+//        firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                val userId = FirebaseAuth.getInstance().currentUser?.uid
+//                val db = FirebaseFirestore.getInstance()
+//                db.collection("Users_data").document(userId!!).get().addOnSuccessListener { doc ->
+//                        Log.d("FirebaseData", "${doc.data}")
+//                        if (doc.exists()) {
+//                            val data = doc.toObject(Users::class.java)
+//                            val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
+//
+//                            sp.edit().apply {
+//                                putString("height", data?.height)
+//                                putString("weight", data?.weight)
+//                                putBoolean("isComplete", true)
+//                                apply()
+//                            }
+//
+//                            startActivity(Intent(requireContext(), MainActivity::class.java))
+//                            requireActivity().finish()
+//                        } else {
+//                            // Profile missing —> go to UserInfo
+//                            Log.d("FirebaseData", "No data Present")
+//                            val intent = Intent(requireContext(), UserActivity::class.java)
+//                            startActivity(intent)
+//                            requireActivity().finish()
+//                        }
+//                    }.addOnFailureListener {
+//                        Toast.makeText(context, "Error checking user info", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//            } else {
+//                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+
     private fun firebaseAuthWithGoogle(idToken: String?) {
         val credentials = GoogleAuthProvider.getCredential(idToken, null)
-        firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = firebaseAuth.currentUser
-                val userId = user?.uid
 
-                val db = FirebaseFirestore.getInstance()
-                db.collection("Users_data").document(userId!!).get()
-                    .addOnSuccessListener { doc ->
-                        if (doc.exists()) {
-                            // Profile exists —> go to MainActivity
-                            val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
-                            sp.edit().putBoolean("isComplete", true).apply()
+        firebaseAuth.signInWithCredential(credentials)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // ✅ Get Firebase user AFTER successful sign-in
+                    val firebaseUser = FirebaseAuth.getInstance().currentUser
+                    val userId = firebaseUser?.uid
 
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                        } else {
-                            // Profile missing —> go to UserInfo
-                            val intent = Intent(requireContext(), AuthActivity::class.java)
-                            intent.putExtra("start", "userInfo")
-                            startActivity(intent)
+                    if (userId == null) {
+                        Toast.makeText(context, "User ID is null", Toast.LENGTH_SHORT).show()
+                        return@addOnCompleteListener
+                    }
+
+                    Log.d("FirebaseData", "Authenticated userId: $userId")
+
+                    // 🔥 Now safely query Firestore with UID
+                    FirebaseFirestore.getInstance()
+                        .collection("Users_data")
+                        .document(userId)
+                        .get()
+                        .addOnSuccessListener { doc ->
+                            Log.d("FirebaseData","${doc}")
+                            if (doc.exists()) {
+                                Log.d("FirebaseData", "doc : ${doc.data}")
+                                val data = doc.toObject(Users::class.java)
+                                val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
+                                sp.edit().apply {
+                                    putString("height", data?.height)
+                                    putString("weight", data?.weight)
+                                    putBoolean("isComplete", true)
+                                    apply()
+                                }
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                                requireActivity().finish()
+                            } else {
+                                // No profile info — go to UserActivity
+                                startActivity(Intent(requireContext(), UserActivity::class.java))
+                                requireActivity().finish()
+                            }
+                        }.addOnFailureListener {
+                            Toast.makeText(context, "Error checking user info", Toast.LENGTH_SHORT)
+                                .show()
                         }
-                        requireActivity().finish()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(context, "Error checking user info", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-            } else {
-                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
+
+                } else {
+                    Toast.makeText(context, "Firebase sign-in failed", Toast.LENGTH_SHORT).show()
+                    Log.e("FirebaseAuth", "Error: ${task.exception?.message}")
+                }
             }
-        }
     }
 
 
@@ -70,8 +128,7 @@ class Login : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater)
         Log.d("CurrentUser", "${firebaseAuth.currentUser} ")
@@ -100,14 +157,11 @@ class Login : Fragment() {
             findNavController().navigate(R.id.action_login_to_signUp)
         }
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.webClientId))
-            .requestEmail()
-            .build()
+            .requestIdToken(getString(R.string.webClientId)).requestEmail().build()
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
         var clientLauncher = registerForActivityResult(
-            ActivityResultContracts
-                .StartActivityForResult()
+            ActivityResultContracts.StartActivityForResult()
         ) { result ->
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
