@@ -87,7 +87,7 @@ class Login : Fragment() {
 
                     // 🔥 Now safely query Firestore with UID
                     FirebaseFirestore.getInstance()
-                        .collection("Users_data")
+                        .collection("User")
                         .document(userId)
                         .get()
                         .addOnSuccessListener { doc ->
