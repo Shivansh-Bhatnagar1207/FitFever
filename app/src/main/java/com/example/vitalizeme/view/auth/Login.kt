@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,44 +30,6 @@ class Login : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-
-//    private fun firebaseAuthWithGoogle(idToken: String?) {
-//        val credentials = GoogleAuthProvider.getCredential(idToken, null)
-//        firebaseAuth.signInWithCredential(credentials).addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                val userId = FirebaseAuth.getInstance().currentUser?.uid
-//                val db = FirebaseFirestore.getInstance()
-//                db.collection("Users_data").document(userId!!).get().addOnSuccessListener { doc ->
-//                        Log.d("FirebaseData", "${doc.data}")
-//                        if (doc.exists()) {
-//                            val data = doc.toObject(Users::class.java)
-//                            val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
-//
-//                            sp.edit().apply {
-//                                putString("height", data?.height)
-//                                putString("weight", data?.weight)
-//                                putBoolean("isComplete", true)
-//                                apply()
-//                            }
-//
-//                            startActivity(Intent(requireContext(), MainActivity::class.java))
-//                            requireActivity().finish()
-//                        } else {
-//                            // Profile missing —> go to UserInfo
-//                            Log.d("FirebaseData", "No data Present")
-//                            val intent = Intent(requireContext(), UserActivity::class.java)
-//                            startActivity(intent)
-//                            requireActivity().finish()
-//                        }
-//                    }.addOnFailureListener {
-//                        Toast.makeText(context, "Error checking user info", Toast.LENGTH_SHORT)
-//                            .show()
-//                    }
-//            } else {
-//                Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
 
     private fun firebaseAuthWithGoogle(idToken: String?) {
         val credentials = GoogleAuthProvider.getCredential(idToken, null)
@@ -97,6 +60,7 @@ class Login : Fragment() {
                                 val data = doc.toObject(Users::class.java)
                                 val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
                                 sp.edit().apply {
+                                    putString("name",data?.name)
                                     putString("height", data?.height)
                                     putString("weight", data?.weight)
                                     putBoolean("isComplete", true)
@@ -145,7 +109,11 @@ class Login : Fragment() {
                         if (task.isSuccessful) {
                             startActivity(Intent(requireContext(), MainActivity::class.java))
                             requireActivity().finish()
-                        } else {
+                        }else if (task.exception is FirebaseTooManyRequestsException) {
+                        Toast.makeText(requireContext(), "Too many attempts. Try again later.", Toast.LENGTH_LONG).show()
+                    }
+
+                    else {
                             Toast.makeText(requireContext(), "Failed to SignIn", Toast.LENGTH_SHORT)
                                 .show()
                         }

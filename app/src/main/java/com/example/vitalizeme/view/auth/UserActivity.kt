@@ -47,7 +47,6 @@ class UserActivity : AppCompatActivity() {
                 "height" to height,
                 "weight" to weight,
                 "gender" to gender,
-                "createdAt" to FieldValue.serverTimestamp()
             )
             firestore.collection("User")
                 .document(currentUser!!)
