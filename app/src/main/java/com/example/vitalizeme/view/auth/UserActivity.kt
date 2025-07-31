@@ -5,16 +5,13 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.vitalizeme.R
 import com.example.vitalizeme.databinding.ActivityUserBinding
 import com.example.vitalizeme.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class UserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserBinding
@@ -33,17 +30,21 @@ class UserActivity : AppCompatActivity() {
 
         binding.loginbtn.setOnClickListener {
             val name = binding.etname.text.toString()
-            val phone = binding.etphone.text.toString()
-            val DOB = binding.etDOB.text.toString()
+            val phone = binding.etphone.text.toString().toLong()
             val height = binding.etHeight.text.toString()
             val weight = binding.etWeight.text.toString()
             val checked = binding.radiogroup.checkedRadioButtonId
             val selected = binding.root.findViewById<RadioButton>(checked)
             val gender = selected.text.toString()
+            val DOB = binding.etDOB.text.toString()
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dobDate = dateFormat.parse(DOB)
+
+
             val userMap = hashMapOf(
                 "name" to name,
                 "phone" to phone,
-                "DOB" to DOB,
+                "DOB" to dobDate,
                 "height" to height,
                 "weight" to weight,
                 "gender" to gender,
@@ -57,6 +58,9 @@ class UserActivity : AppCompatActivity() {
                             putString("name", name)
                             putString("height", height)
                             putString("weight", weight)
+                            putLong("phone", phone)
+                            putString("DOB", DOB)
+                            putString("gender", gender)
                             putString("UserID", currentUser)
                             putBoolean("isComplete", true)
                             apply()

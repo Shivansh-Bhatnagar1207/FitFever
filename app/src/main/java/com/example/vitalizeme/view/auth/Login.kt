@@ -54,15 +54,18 @@ class Login : Fragment() {
                         .document(userId)
                         .get()
                         .addOnSuccessListener { doc ->
-                            Log.d("FirebaseData","${doc}")
+                            Log.d("FirebaseData", "${doc}")
                             if (doc.exists()) {
                                 Log.d("FirebaseData", "doc : ${doc.data}")
                                 val data = doc.toObject(Users::class.java)
                                 val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
                                 sp.edit().apply {
-                                    putString("name",data?.name)
-                                    putString("height", data?.height)
-                                    putString("weight", data?.weight)
+                                    putString("name", data?.name)
+                                    putLong("phone", data?.phone!!)
+                                    putString("gender", data.gender)
+                                    putString("height", data.height)
+                                    putString("weight", data.weight)
+                                    putString("DOB",data.DOB.toString())
                                     putBoolean("isComplete", true)
                                     apply()
                                 }
@@ -109,11 +112,13 @@ class Login : Fragment() {
                         if (task.isSuccessful) {
                             startActivity(Intent(requireContext(), MainActivity::class.java))
                             requireActivity().finish()
-                        }else if (task.exception is FirebaseTooManyRequestsException) {
-                        Toast.makeText(requireContext(), "Too many attempts. Try again later.", Toast.LENGTH_LONG).show()
-                    }
-
-                    else {
+                        } else if (task.exception is FirebaseTooManyRequestsException) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Too many attempts. Try again later.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
                             Toast.makeText(requireContext(), "Failed to SignIn", Toast.LENGTH_SHORT)
                                 .show()
                         }

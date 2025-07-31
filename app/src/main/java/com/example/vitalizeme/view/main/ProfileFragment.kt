@@ -1,60 +1,71 @@
 package com.example.vitalizeme.view.main
 
+import android.content.Context.MODE_PRIVATE
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.vitalizeme.R
+import com.example.vitalizeme.databinding.FragmentProfileBinding
+import com.example.vitalizeme.view.auth.UserActivity
+import com.example.vitalizeme.view.onboarding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var binding : FragmentProfileBinding
+    private lateinit var sp : SharedPreferences
+    private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = FragmentProfileBinding.inflate(layoutInflater)
+
+        sp = requireContext().getSharedPreferences("User",MODE_PRIVATE)
+
+        val name = sp.getString("name","")
+        val phone = sp.getLong("phone",0L)
+        val height = sp.getString("height","")
+        val weight = sp.getString("weight","")
+        val gender = sp.getString("gender","")
+        val DOB = sp.getString("DOB","")
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        binding.name.text = name
+        binding.phone.text = phone.toString()
+        binding.height.text = "$height m"
+        binding.weight.text = "$weight kg"
+        binding.gender.text = gender
+        binding.dob.text = DOB
+
+
+
+
+        binding.user.setOnClickListener {
+            startActivity(Intent(requireContext(), UserActivity::class.java))
+        }
+
+        binding.signout.setOnClickListener {
+            firebaseAuth.signOut()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.webClientId)) // replace with your web client ID
+                .requestEmail()
+                .build()
+
+            val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+
+            googleSignInClient.signOut()
+            startActivity(Intent(requireContext(), onboarding::class.java))
+            requireActivity().finish()
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
