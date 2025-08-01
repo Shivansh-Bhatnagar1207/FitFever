@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/plans_graph"
+    app:startDestination="@id/cardioFragment">
+    <fragment
+        android:id="@+id/cardioFragment"
+        android:name="com.example.vitalizeme.view.main.plans.CardioFragment"
+        android:label="fragment_cardio"
+        tools:layout="@layout/fragment_cardio" />
+    <fragment
+        android:id="@+id/meditationFragment"
+        android:name="com.example.vitalizeme.view.main.plans.MeditationFragment"
+        android:label="fragment_meditation"
+        tools:layout="@layout/fragment_meditation" />
+    <fragment
+        android:id="@+id/stretchingFragment"
+        android:name="com.example.vitalizeme.view.main.plans.StretchingFragment"
+        android:label="fragment_stretching"
+        tools:layout="@layout/fragment_stretching" />
+    <fragment
+        android:id="@+id/WTFragment"
+        android:name="com.example.vitalizeme.view.main.plans.WTFragment"
+        android:label="fragment_w_t"
+        tools:layout="@layout/fragment_w_t" />
+    <fragment
+        android:id="@+id/yogaFragment"
+        android:name="com.example.vitalizeme.view.main.plans.YogaFragment"
+        android:label="fragment_yoga"
+        tools:layout="@layout/fragment_yoga" />
+</navigation>

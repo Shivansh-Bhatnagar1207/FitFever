@@ -2,6 +2,22 @@
     <string name="app_name">FitFever</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="CardioText">
+        Cardiovascular exercises are excellent for improving heart health and endurance. Engaging in activities like running, cycling, or swimming increases your heart rate, boosting circulation and oxygen delivery throughout the body. Regular cardio helps burn calories, supports weight management, and enhances stamina. It also releases endorphins, reducing stress and improving mood. Over time, it contributes to better sleep, a stronger immune system, and overall physical and mental resilience.
+    </string>
+    <string name="MeditationText">
+        Meditation is a powerful tool for calming the mind and cultivating inner peace. By focusing on the present moment or a particular object of attention, meditation helps reduce stress, anxiety, and negative thought patterns. It improves concentration, emotional regulation, and self-awareness. With consistent practice, meditation promotes relaxation, enhances mental clarity, and nurtures a sense of balance and well-being. It\'s a transformative practice for fostering mindfulness and emotional harmony.
+    </string>
+    <string name="WTText">
+        Weight training builds strength, enhances muscle tone, and increases metabolic efficiency. Lifting weights or using resistance exercises supports joint health and improves bone density, reducing the risk of osteoporosis. It can also aid in achieving fitness goals by sculpting the body and boosting overall physical performance. Beyond the physical benefits, weight training fosters a sense of
+            accomplishment, increases energy levels, and supports mental toughness and confidence.
+    </string>
+    <string name="YogaText">
+        Yoga offers numerous benefits for both the mind and body. It helps improve flexibility, strength, and posture while promoting better balance and coordination. Regular practice can reduce stress, enhance mental clarity, and support emotional well-being through mindful breathing and relaxation techniques. Additionally, yoga is known to boost energy levels, improve sleep quality, and support overall physical and mental health. It\'s a holistic practice that nurtures harmony within.
+    </string>
+    <string name="StretchingText">
+        Stretching plays a vital role in maintaining flexibility and range of motion in the joints. Regular stretching reduces muscle tightness, prevents injuries, and aids in recovery after workouts.
+            It also promotes better posture and relaxation by alleviating tension in the muscles. As a gentle and soothing practice, stretching enhances blood circulation, relieves stress, and supports
+            overall mobility, making it an essential component of a balanced fitness routine.</string>
     <string name="webClientId">85558474478-odac36dvi8dpuq7jhnrsh39beru5987i.apps.googleusercontent.com</string>
 </resources>

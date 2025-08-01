@@ -1,5 +1,6 @@
 package com.example.vitalizeme.view.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.example.vitalizeme.R
 import com.example.vitalizeme.adapter.PlansAdapter
 import com.example.vitalizeme.databinding.FragmentPlanBinding
 import com.example.vitalizeme.repository.PlanRepository
+import com.example.vitalizeme.view.main.plans.PlansActivity
 import com.example.vitalizeme.viewmodel.PlanViewModel
 
 
@@ -30,20 +32,21 @@ class PlanFragment : Fragment() {
 
         val repo = PlanRepository()
         viewModel = PlanViewModel(repo)
+        val intent = Intent(requireContext(), PlansActivity::class.java)
 
         adapter = PlansAdapter(
             emptyList(),
             { plans ->
                 if (plans.planTitle == "Cardio") {
-                    findNavController().navigate(R.id.action_planFragment_to_cardioFragment)
+                   startActivity(intent.putExtra("plan_type","Cardio"))
                 }else if (plans.planTitle == "Meditation"){
-                    findNavController().navigate(R.id.action_planFragment_to_meditationFragment)
+                    startActivity(intent.putExtra("plan_type","mediation"))
                 }else if (plans.planTitle == "Stretching"){
-                    findNavController().navigate(R.id.action_planFragment_to_stretchingFragment)
+                    startActivity(intent.putExtra("plan_type","stretching"))
                 }else if (plans.planTitle == "Weight Training"){
-                    findNavController().navigate(R.id.action_planFragment_to_WTFragment)
+                    startActivity(intent.putExtra("plan_type","wt"))
                 }else if (plans.planTitle == "Yoga"){
-                    findNavController().navigate(R.id.action_planFragment_to_yogaFragment)
+                    startActivity(intent.putExtra("plan_type","yoga"))
                 }
             }
         )

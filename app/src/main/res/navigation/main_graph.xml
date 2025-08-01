@@ -14,51 +14,10 @@
         android:id="@+id/planFragment"
         android:name="com.example.vitalizeme.view.main.PlanFragment"
         android:label="fragment_plan"
-        tools:layout="@layout/fragment_plan" >
-        <action
-            android:id="@+id/action_planFragment_to_cardioFragment"
-            app:destination="@id/cardioFragment" />
-        <action
-            android:id="@+id/action_planFragment_to_meditationFragment"
-            app:destination="@id/meditationFragment" />
-        <action
-            android:id="@+id/action_planFragment_to_stretchingFragment"
-            app:destination="@id/stretchingFragment" />
-        <action
-            android:id="@+id/action_planFragment_to_WTFragment"
-            app:destination="@id/WTFragment" />
-        <action
-            android:id="@+id/action_planFragment_to_yogaFragment"
-            app:destination="@id/yogaFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_plan" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.vitalizeme.view.main.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/cardioFragment"
-        android:name="com.example.vitalizeme.view.main.plans.CardioFragment"
-        android:label="fragment_cardio"
-        tools:layout="@layout/fragment_cardio" />
-    <fragment
-        android:id="@+id/meditationFragment"
-        android:name="com.example.vitalizeme.view.main.plans.MeditationFragment"
-        android:label="fragment_meditation"
-        tools:layout="@layout/fragment_meditation" />
-    <fragment
-        android:id="@+id/stretchingFragment"
-        android:name="com.example.vitalizeme.view.main.plans.StretchingFragment"
-        android:label="fragment_stretching"
-        tools:layout="@layout/fragment_stretching" />
-    <fragment
-        android:id="@+id/WTFragment"
-        android:name="com.example.vitalizeme.view.main.plans.WTFragment"
-        android:label="fragment_w_t"
-        tools:layout="@layout/fragment_w_t" />
-    <fragment
-        android:id="@+id/yogaFragment"
-        android:name="com.example.vitalizeme.view.main.plans.YogaFragment"
-        android:label="fragment_yoga"
-        tools:layout="@layout/fragment_yoga" />
 </navigation>
