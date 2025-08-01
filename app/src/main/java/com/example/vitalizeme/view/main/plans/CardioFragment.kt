@@ -24,6 +24,7 @@ class CardioFragment : Fragment() {
     private lateinit var binding: FragmentCardioBinding
     private lateinit var sp: SharedPreferences
     private var Runningjob: Job? = null
+
     private var Cyclingjob: Job? = null
     private var Jumpingjob: Job? = null
     private var runningIsActive = false
@@ -57,7 +58,13 @@ class CardioFragment : Fragment() {
             runningIsActive = !runningIsActive
             if (runningIsActive) {
                 binding.runningPlaybtn.setImageResource(R.drawable.pause_button)
-                startRunning()
+                Runningjob = startTracking(
+                    runningIsActive,
+                    { runningTime },
+                    { runningTime = it },
+                    { binding.runningText.text = it },
+                    0.25
+                )
 
             } else {
                 binding.runningPlaybtn.setImageResource(R.drawable.play_btn)
@@ -65,8 +72,8 @@ class CardioFragment : Fragment() {
         }
 
         binding.runningStopbtn.setOnClickListener {
-            stopDoing(runningTime, 0.25)
-            Runningjob?.cancel()
+            stopTracking(Runningjob, runningTime, 0.25)
+            runningTime = 0
             binding.runningText.text = "Burn Rate : 15 kcal/min"
             Toast.makeText(requireContext(), "Activity Recorded", Toast.LENGTH_SHORT).show()
         }
@@ -75,15 +82,21 @@ class CardioFragment : Fragment() {
             cyclingIsActive = !cyclingIsActive
             if (cyclingIsActive) {
                 binding.cyclingPlaybtn.setImageResource(R.drawable.pause_button)
-                startCycling()
+                Cyclingjob = startTracking(
+                    cyclingIsActive,
+                    { cyclingTime },
+                    { cyclingTime = it },
+                    { binding.cyclingText.text = it },
+                    0.18
+                )
             } else {
                 binding.cyclingPlaybtn.setImageResource(R.drawable.play_btn)
             }
         }
 
         binding.cyclingStopbtn.setOnClickListener {
-            stopDoing(cyclingTime, 0.16)
-            Cyclingjob?.cancel()
+            stopTracking(Cyclingjob, cyclingTime, 0.18)
+            cyclingTime = 0
             binding.cyclingText.text = "Burn Rate : 10 Kcal/min"
             Toast.makeText(requireContext(), "Activity Recorded", Toast.LENGTH_SHORT).show()
         }
@@ -92,15 +105,21 @@ class CardioFragment : Fragment() {
             jumpingIsActive = !jumpingIsActive
             if (jumpingIsActive) {
                 binding.jumpingPlaybtn.setImageResource(R.drawable.pause_button)
-                startJumping()
+                Jumpingjob = startTracking(
+                    jumpingIsActive,
+                    { jumpingTime },
+                    { jumpingTime = it },
+                    { binding.jumpingText.text = it },
+                    0.15
+                )
             } else {
                 binding.jumpingPlaybtn.setImageResource(R.drawable.play_btn)
             }
         }
 
         binding.jumpingStopbtn.setOnClickListener {
-            stopDoing(jumpingTime, 0.13)
-            Jumpingjob?.cancel()
+            stopTracking(Jumpingjob, jumpingTime, 0.13)
+            jumpingTime = 0
             binding.jumpingText.text = "Burn Rate : 08 Kcal/min"
             Toast.makeText(requireContext(), "Activity Recorded", Toast.LENGTH_SHORT).show()
         }
@@ -109,55 +128,40 @@ class CardioFragment : Fragment() {
         return binding.root
     }
 
-    private fun startJumping() {
-        Jumpingjob = lifecycleScope.launch {
-            while (jumpingIsActive) {
+
+    private fun startTracking(
+        isActive: Boolean,
+        getTimer: () -> Int,
+        setTimer: (Int) -> Unit,
+        setText: (String) -> Unit,
+        calBurned: Double
+    ): Job {
+        return lifecycleScope.launch {
+            while (isActive) {
                 delay(1000)
-                jumpingTime++
-                val min = jumpingTime / 60
-                val sec = jumpingTime % 60
+                var timer = getTimer() + 1
+                setTimer(timer)
+                val min = timer / 60
+                val sec = timer % 60
                 val timeFormatter = String.format("%2dm %2ds", min, sec)
-                binding.jumpingText.text =
-                    "time : $timeFormatter\n Calories : ${jumpingTime * 0.25} Kcal"
+                setText(
+                    "time : $timeFormatter\n Calories : ${timer * calBurned} Kcal"
+                )
             }
         }
     }
 
-
-    private fun startCycling() {
-        Cyclingjob = lifecycleScope.launch {
-            while (cyclingIsActive) {
-                delay(1000)
-                cyclingTime++
-                val min = cyclingTime / 60
-                val sec = cyclingTime % 60
-                val timeFormatter = String.format("%2dm %2ds", min, sec)
-                binding.cyclingText.text =
-                    "time : $timeFormatter\n Calories : ${cyclingTime * 0.25} Kcal"
-            }
-        }
-    }
-
-
-    private fun startRunning() {
-        Runningjob = lifecycleScope.launch {
-            while (runningIsActive) {
-                delay(1000)
-                runningTime++
-                val min = runningTime / 60
-                val sec = runningTime % 60
-                val timeFormatter = String.format("%2dm %2ds", min, sec)
-                binding.runningText.text =
-                    "time : $timeFormatter\n Calories : ${runningTime * 0.25} Kcal"
-            }
-        }
-
-    }
-
-    private fun stopDoing(activityTime: Int, calBurned: Double) {
+    private fun stopTracking(
+        job: Job?,
+        activityTime: Int,
+        calBurned: Double
+    ) {
         time = activityTime + time
         workoutCount++
         KcalCount = (activityTime * calBurned).toInt()
+
+        job?.cancel()
+
         sp.edit().apply {
             putInt(WORKOUTDATA.TIME, time)
             putInt(WORKOUTDATA.WORKOUT_COUNT, workoutCount)
