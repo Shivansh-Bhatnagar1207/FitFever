@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
 import com.example.vitalizeme.R
 import com.example.vitalizeme.adapter.BannerAdapter
+import com.example.vitalizeme.constants.PrefConstants
+import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.FragmentHomeBinding
 import com.example.vitalizeme.model.Users
 import com.example.vitalizeme.repository.BannerRepository
@@ -36,10 +38,10 @@ class HomeFragment : Fragment() {
 
         firestore = FirebaseFirestore.getInstance()
 
-        sp = requireContext().getSharedPreferences("User",MODE_PRIVATE)
+        sp = requireContext().getSharedPreferences(PrefConstants.USER,MODE_PRIVATE)
 
-        val height :Double? = sp.getString("height","")?.toDouble()
-        val weight : Double? = sp.getString("weight","")?.toDouble()
+        val height :Double? = sp.getString(USERDATA.HEIGHT,"")?.toDouble()
+        val weight : Double? = sp.getString(USERDATA.WEIGHT,"")?.toDouble()
         binding.height.text = "${height.toString()} m"
         binding.weight.text = "${weight.toString()} kg"
 

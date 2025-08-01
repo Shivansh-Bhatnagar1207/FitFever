@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.vitalizeme.R
+import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.FragmentProfileBinding
 import com.example.vitalizeme.view.auth.UserActivity
 import com.example.vitalizeme.view.onboarding
@@ -29,12 +30,12 @@ class ProfileFragment : Fragment() {
 
         sp = requireContext().getSharedPreferences("User",MODE_PRIVATE)
 
-        val name = sp.getString("name","")
-        val phone = sp.getLong("phone",0L)
-        val height = sp.getString("height","")
-        val weight = sp.getString("weight","")
-        val gender = sp.getString("gender","")
-        val DOB = sp.getString("DOB","")
+        val name = sp.getString(USERDATA.NAME,"")
+        val phone = sp.getLong(USERDATA.PHONE,0L)
+        val height = sp.getString(USERDATA.HEIGHT,"")
+        val weight = sp.getString(USERDATA.HEIGHT,"")
+        val gender = sp.getString(USERDATA.GENDER,"")
+        val DOB = sp.getString(USERDATA.DOB,"")
         firebaseAuth = FirebaseAuth.getInstance()
 
         binding.name.text = name

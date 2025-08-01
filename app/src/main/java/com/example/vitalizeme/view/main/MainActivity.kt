@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.vitalizeme.R
+import com.example.vitalizeme.constants.PrefConstants
 import com.example.vitalizeme.databinding.ActivityMainBinding
 import com.example.vitalizeme.view.auth.AuthActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sp = this.getSharedPreferences("User",MODE_PRIVATE)
+        val sp = this.getSharedPreferences(PrefConstants.USER,MODE_PRIVATE)
         val isCompeleted = sp.getBoolean("isComplete",false)
 
         if(isCompeleted == false){

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.vitalizeme.constants.PrefConstants
 import com.example.vitalizeme.databinding.ActivityOnboardingBinding
 import com.example.vitalizeme.view.auth.AuthActivity
 import com.example.vitalizeme.view.auth.UserActivity
@@ -27,7 +28,7 @@ class onboarding : AppCompatActivity() {
 
         binding.button.setOnClickListener {
             if (user != null) {
-                sp = getSharedPreferences("User", MODE_PRIVATE)
+                sp = getSharedPreferences(PrefConstants.USER, MODE_PRIVATE)
                 val isComplete = sp.getBoolean("isComplete", false)
                 if (isComplete) {
                     startActivity(Intent(this, MainActivity::class.java))

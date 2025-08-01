@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.vitalizeme.constants.PrefConstants
+import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.ActivityUserBinding
 import com.example.vitalizeme.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +26,7 @@ class UserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firestore = FirebaseFirestore.getInstance()
-        sp = this.getSharedPreferences("User", MODE_PRIVATE)
+        sp = this.getSharedPreferences(PrefConstants.USER, MODE_PRIVATE)
 
         val currentUser = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -49,20 +51,18 @@ class UserActivity : AppCompatActivity() {
                 "weight" to weight,
                 "gender" to gender,
             )
-            firestore.collection("User")
-                .document(currentUser!!)
-                .set(userMap)
+            firestore.collection("User").document(currentUser!!).set(userMap)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         sp.edit().apply {
-                            putString("name", name)
-                            putString("height", height)
-                            putString("weight", weight)
-                            putLong("phone", phone)
-                            putString("DOB", DOB)
-                            putString("gender", gender)
-                            putString("UserID", currentUser)
-                            putBoolean("isComplete", true)
+                            putString(USERDATA.NAME, name)
+                            putString(USERDATA.HEIGHT, height)
+                            putString(USERDATA.WEIGHT, weight)
+                            putLong(USERDATA.PHONE, phone)
+                            putString(USERDATA.DOB, DOB)
+                            putString(USERDATA.GENDER, gender)
+                            putString(USERDATA.USERID, currentUser)
+                            putBoolean(USERDATA.ISCOMPLETE, true)
                             apply()
                         }
                         Toast.makeText(this, "Welcome ${name}", Toast.LENGTH_SHORT).show()

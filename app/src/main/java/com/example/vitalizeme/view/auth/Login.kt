@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vitalizeme.R
+import com.example.vitalizeme.constants.PrefConstants
+import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.FragmentLoginBinding
 import com.example.vitalizeme.model.Users
 import com.example.vitalizeme.view.main.MainActivity
@@ -58,15 +60,18 @@ class Login : Fragment() {
                             if (doc.exists()) {
                                 Log.d("FirebaseData", "doc : ${doc.data}")
                                 val data = doc.toObject(Users::class.java)
-                                val sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
+                                val sp = requireContext().getSharedPreferences(
+                                    PrefConstants.USER,
+                                    MODE_PRIVATE
+                                )
                                 sp.edit().apply {
-                                    putString("name", data?.name)
-                                    putLong("phone", data?.phone!!)
-                                    putString("gender", data.gender)
-                                    putString("height", data.height)
-                                    putString("weight", data.weight)
-                                    putString("DOB",data.DOB.toString())
-                                    putBoolean("isComplete", true)
+                                    putString(USERDATA.NAME, data?.name)
+                                    putLong(USERDATA.PHONE, data?.phone!!)
+                                    putString(USERDATA.GENDER, data.gender)
+                                    putString(USERDATA.HEIGHT, data.height)
+                                    putString(USERDATA.WEIGHT, data.weight)
+                                    putString(USERDATA.DOB, data.DOB.toString())
+                                    putBoolean(USERDATA.ISCOMPLETE, true)
                                     apply()
                                 }
                                 startActivity(Intent(requireContext(), MainActivity::class.java))
