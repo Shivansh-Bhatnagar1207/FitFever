@@ -15,6 +15,7 @@ import com.example.vitalizeme.R
 import com.example.vitalizeme.adapter.BannerAdapter
 import com.example.vitalizeme.constants.PrefConstants
 import com.example.vitalizeme.constants.USERDATA
+import com.example.vitalizeme.constants.WORKOUTDATA
 import com.example.vitalizeme.databinding.FragmentHomeBinding
 import com.example.vitalizeme.model.Users
 import com.example.vitalizeme.repository.BannerRepository
@@ -25,7 +26,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
 
-    private lateinit var sp : SharedPreferences
+    private lateinit var userSP : SharedPreferences
+    private lateinit var workoutSP : SharedPreferences
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding : FragmentHomeBinding
     private lateinit var adapter: BannerAdapter
@@ -38,13 +40,23 @@ class HomeFragment : Fragment() {
 
         firestore = FirebaseFirestore.getInstance()
 
-        sp = requireContext().getSharedPreferences(PrefConstants.USER,MODE_PRIVATE)
+        userSP = requireContext().getSharedPreferences(PrefConstants.USER,MODE_PRIVATE)
+        workoutSP = requireContext().getSharedPreferences(PrefConstants.WORKOUT,MODE_PRIVATE)
 
-        val height :Double? = sp.getString(USERDATA.HEIGHT,"")?.toDouble()
-        val weight : Double? = sp.getString(USERDATA.WEIGHT,"")?.toDouble()
+
+        val height :Double? = userSP.getString(USERDATA.HEIGHT,"")?.toDouble()
+        val weight : Double? = userSP.getString(USERDATA.WEIGHT,"")?.toDouble()
         binding.height.text = "${height.toString()} m"
         binding.weight.text = "${weight.toString()} kg"
 
+
+        val time = workoutSP.getInt(WORKOUTDATA.TIME,0)
+        val workoutCount = workoutSP.getInt(WORKOUTDATA.WORKOUT_COUNT,0)
+        val KcalBurned = workoutSP.getInt(WORKOUTDATA.KCAL_COUNT,0)
+
+        binding.min.text = (time/60).toString()
+        binding.kcal.text = KcalBurned.toString()
+        binding.workout.text = workoutCount.toString()
 
 
         fun Bmical(height : Double,weight : Double) : Double
