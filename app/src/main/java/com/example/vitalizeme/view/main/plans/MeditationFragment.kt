@@ -6,16 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.vitalizeme.R
+import com.example.vitalizeme.databinding.FragmentMeditationBinding
 
 
 class MeditationFragment : Fragment() {
-
+    private lateinit var binding : FragmentMeditationBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        binding = FragmentMeditationBinding.inflate(inflater)
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_meditation, container, false)
+        return binding.root
     }
 
 }

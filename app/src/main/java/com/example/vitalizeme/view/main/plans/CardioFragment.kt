@@ -59,7 +59,6 @@ class CardioFragment : Fragment() {
             if (runningIsActive) {
                 binding.runningPlaybtn.setImageResource(R.drawable.pause_button)
                 Runningjob = startTracking(
-                    runningIsActive,
                     { runningTime },
                     { runningTime = it },
                     { binding.runningText.text = it },
@@ -67,6 +66,7 @@ class CardioFragment : Fragment() {
                 )
 
             } else {
+                Runningjob?.cancel()
                 binding.runningPlaybtn.setImageResource(R.drawable.play_btn)
             }
         }
@@ -83,13 +83,13 @@ class CardioFragment : Fragment() {
             if (cyclingIsActive) {
                 binding.cyclingPlaybtn.setImageResource(R.drawable.pause_button)
                 Cyclingjob = startTracking(
-                    cyclingIsActive,
                     { cyclingTime },
                     { cyclingTime = it },
                     { binding.cyclingText.text = it },
                     0.18
                 )
             } else {
+                Cyclingjob?.cancel()
                 binding.cyclingPlaybtn.setImageResource(R.drawable.play_btn)
             }
         }
@@ -106,13 +106,13 @@ class CardioFragment : Fragment() {
             if (jumpingIsActive) {
                 binding.jumpingPlaybtn.setImageResource(R.drawable.pause_button)
                 Jumpingjob = startTracking(
-                    jumpingIsActive,
                     { jumpingTime },
                     { jumpingTime = it },
                     { binding.jumpingText.text = it },
                     0.15
                 )
             } else {
+                Jumpingjob?.cancel()
                 binding.jumpingPlaybtn.setImageResource(R.drawable.play_btn)
             }
         }
@@ -130,14 +130,13 @@ class CardioFragment : Fragment() {
 
 
     private fun startTracking(
-        isActive: Boolean,
         getTimer: () -> Int,
         setTimer: (Int) -> Unit,
         setText: (String) -> Unit,
         calBurned: Double
     ): Job {
         return lifecycleScope.launch {
-            while (isActive) {
+            while (true) {
                 delay(1000)
                 var timer = getTimer() + 1
                 setTimer(timer)
@@ -145,7 +144,7 @@ class CardioFragment : Fragment() {
                 val sec = timer % 60
                 val timeFormatter = String.format("%2dm %2ds", min, sec)
                 setText(
-                    "time : $timeFormatter\n Calories : ${timer * calBurned} Kcal"
+                    "time : $timeFormatter\n Calories : ${"%.2f".format(timer * calBurned)} Kcal"
                 )
             }
         }
