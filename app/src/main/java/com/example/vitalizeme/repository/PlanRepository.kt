@@ -16,7 +16,7 @@ class PlanRepository {
             Plans(R.drawable.meditation,"Meditation"),
             Plans(R.drawable.strech,"Stretching"),
             Plans(R.drawable.wt,"Weight Training"),
-            Plans(R.drawable.yoga,"Yoga"),
+//            Plans(R.drawable.yoga,"Yoga"),
         )
     }
 }
