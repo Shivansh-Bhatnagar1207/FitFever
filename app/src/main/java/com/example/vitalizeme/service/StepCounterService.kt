@@ -24,6 +24,11 @@ class StepCounterService : Service(), SensorEventListener {
 
     companion object {
         var callback: stepCallback? = null
+        fun restStep(){
+            instance?.initialStep = -1
+        }
+
+        private var instance : StepCounterService? = null
     }
 
 
@@ -91,5 +96,6 @@ class StepCounterService : Service(), SensorEventListener {
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         sensorManager.unregisterListener(this)
         stopForeground(true)
+        instance = null
     }
 }

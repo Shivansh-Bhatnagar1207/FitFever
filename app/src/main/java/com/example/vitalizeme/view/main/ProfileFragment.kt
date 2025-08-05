@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.example.vitalizeme.R
 import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.FragmentProfileBinding
+import com.example.vitalizeme.service.StepCounterService
 import com.example.vitalizeme.view.auth.UserActivity
 import com.example.vitalizeme.view.onboarding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -19,8 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class ProfileFragment : Fragment() {
-    private lateinit var binding : FragmentProfileBinding
-    private lateinit var sp : SharedPreferences
+    private lateinit var binding: FragmentProfileBinding
+    private lateinit var sp: SharedPreferences
     private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,14 +29,14 @@ class ProfileFragment : Fragment() {
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
 
-        sp = requireContext().getSharedPreferences("User",MODE_PRIVATE)
+        sp = requireContext().getSharedPreferences("User", MODE_PRIVATE)
 
-        val name = sp.getString(USERDATA.NAME,"")
-        val phone = sp.getLong(USERDATA.PHONE,0L)
-        val height = sp.getString(USERDATA.HEIGHT,"")
-        val weight = sp.getString(USERDATA.HEIGHT,"")
-        val gender = sp.getString(USERDATA.GENDER,"")
-        val DOB = sp.getString(USERDATA.DOB,"")
+        val name = sp.getString(USERDATA.NAME, "")
+        val phone = sp.getLong(USERDATA.PHONE, 0L)
+        val height = sp.getString(USERDATA.HEIGHT, "")
+        val weight = sp.getString(USERDATA.HEIGHT, "")
+        val gender = sp.getString(USERDATA.GENDER, "")
+        val DOB = sp.getString(USERDATA.DOB, "")
         firebaseAuth = FirebaseAuth.getInstance()
 
         binding.name.text = name
@@ -63,6 +64,8 @@ class ProfileFragment : Fragment() {
 
             googleSignInClient.signOut()
             startActivity(Intent(requireContext(), onboarding::class.java))
+            StepCounterService.restStep()
+            requireContext().stopService(Intent(requireContext(), StepCounterService::class.java))
             requireActivity().finish()
         }
 
