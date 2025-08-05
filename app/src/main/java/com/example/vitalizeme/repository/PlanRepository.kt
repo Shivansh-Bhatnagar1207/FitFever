@@ -6,12 +6,12 @@ import com.example.vitalizeme.R
 import com.example.vitalizeme.model.Plans
 
 class PlanRepository {
-    private val Plandata = MutableLiveData<List<Plans>>()
-    val _Plandata : LiveData<List<Plans>>
-        get() = Plandata
+    private val _Plandata = MutableLiveData<List<Plans>>()
+    val Plandata : LiveData<List<Plans>>
+        get() = _Plandata
 
     init{
-        Plandata.value = listOf<Plans>(
+        _Plandata.value = listOf<Plans>(
             Plans(R.drawable.cardio,"Cardio"),
             Plans(R.drawable.meditation,"Meditation"),
             Plans(R.drawable.strech,"Stretching"),

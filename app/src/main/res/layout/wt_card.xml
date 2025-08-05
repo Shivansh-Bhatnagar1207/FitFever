@@ -11,14 +11,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:orientation="vertical">
 
         <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/wtImage"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:src="@drawable/jumprope" />
 
         <TextView
+            android:id="@+id/wtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -65,12 +68,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sets Completed : "
+                    android:text="Calories Burned : "
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/setCompleted"
+                    android:id="@+id/calBurned"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -88,12 +91,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sets Completed : "
+                    android:text="Calories burned per set : "
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/setCompleted"
+                    android:id="@+id/calBurnedPerSet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -111,12 +114,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sets Completed : "
+                    android:text="Total Time : "
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/setCompleted"
+                    android:id="@+id/totalTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -135,15 +138,15 @@
             android:padding="10dp">
 
             <ImageButton
-                android:id="@+id/jumpingPlaybtn"
+                android:id="@+id/MarkComplete"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="5dp"
                 android:background="@drawable/rounded_btn"
                 android:backgroundTint="@color/primary"
                 android:padding="5dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/play_btn"
+                android:scaleType="centerCrop"
+                android:src="@drawable/checkmark"
                 app:tint="@color/white" />
 
             <View
@@ -152,13 +155,13 @@
                 android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/jumpingStopbtn"
+                android:id="@+id/RecordSet"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/rounded_btn"
                 android:backgroundTint="@color/red"
                 android:scaleType="centerInside"
-                android:src="@drawable/stop_button"
+                android:src="@drawable/refresh"
                 app:tint="@color/white" />
 
         </LinearLayout>
