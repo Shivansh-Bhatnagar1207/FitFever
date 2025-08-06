@@ -39,6 +39,7 @@ class ProfileFragment : Fragment() {
         val DOB = sp.getString(USERDATA.DOB, "")
         firebaseAuth = FirebaseAuth.getInstance()
 
+
         binding.name.text = name
         binding.phone.text = phone.toString()
         binding.height.text = "$height m"

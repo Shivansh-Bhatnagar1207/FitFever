@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
         val workoutCount = workoutSP.getInt(WORKOUTDATA.WORKOUT_COUNT, 0)
         val KcalBurned = workoutSP.getInt(WORKOUTDATA.KCAL_COUNT, 0)
 
-        binding.min.text = (time / 60).toString()
+        binding.min.text = (time.toDouble()/60).toString()
         binding.kcal.text = KcalBurned.toString()
         binding.workout.text = workoutCount.toString()
 

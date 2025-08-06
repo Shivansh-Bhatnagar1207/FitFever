@@ -24,14 +24,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sp = this.getSharedPreferences(PrefConstants.USER,MODE_PRIVATE)
-        val isCompeleted = sp.getBoolean("isComplete",false)
-
-        if(isCompeleted == false){
-            startActivity(Intent(this, AuthActivity::class.java).putExtra("start","user"))
-        }
-
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id
             .MainFragmentController) as NavHostFragment
 

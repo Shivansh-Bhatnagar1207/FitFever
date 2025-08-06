@@ -22,14 +22,8 @@ class AuthActivity : AppCompatActivity() {
 
         val navController = navHostFragment.navController
 
-        val start = intent.getStringExtra("start")
-
         setContentView(binding.root)
 
-        when(start){
-            "login" -> navController.navigate(R.id.login)
-            "user" -> navController.navigate(R.id.userInfo)
-        }
 
     }
 }
