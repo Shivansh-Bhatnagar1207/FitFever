@@ -53,6 +53,11 @@ class HomeFragment : Fragment() {
         userSP = requireContext().getSharedPreferences(PrefConstants.USER, MODE_PRIVATE)
         workoutSP = requireContext().getSharedPreferences(PrefConstants.WORKOUT, MODE_PRIVATE)
 
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         val height: Double? = userSP.getString(USERDATA.HEIGHT, "")?.toDouble()
         val weight: Double? = userSP.getString(USERDATA.WEIGHT, "")?.toDouble()
@@ -105,21 +110,43 @@ class HomeFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { banners ->
             adapter.bannerItems = banners
         }
-
-        val intent = Intent(requireContext(), StepCounterService::class.java)
-
-        StepCounterService.callback = object : stepCallback {
+        StepCounterService.Subscribe.register(object : stepCallback {
             override fun onStepCountChange(stepCount: Int) {
                 binding.steps.text = "$stepCount"
             }
+        })
+
+        if (!isServiceRunning()) {
+            val intent = Intent(requireContext(), StepCounterService::class.java)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                requireContext().startForegroundService(intent)
+            } else {
+                requireContext().startService(intent)
+            }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            requireContext().startForegroundService(intent)
-        } else {
-            requireContext().startService(intent)
-        }
+    }
 
-        return binding.root
+    override fun onPause() {
+        super.onPause()
+        StepCounterService.Subscribe.unregister()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        StepCounterService.Subscribe.unregister()
+
+    }
+
+    private fun isServiceRunning(): Boolean {
+        val manager =
+            requireContext().getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (StepCounterService::class.java.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 }

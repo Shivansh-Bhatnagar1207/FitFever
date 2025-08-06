@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 class onboarding : AppCompatActivity() {
     private lateinit var binding: ActivityOnboardingBinding
-    private lateinit var intent: Intent
     private lateinit var sp: SharedPreferences
 
     @RequiresApi(Build.VERSION_CODES.P)
