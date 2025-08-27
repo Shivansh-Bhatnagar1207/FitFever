@@ -3,6 +3,7 @@ package com.example.vitalizeme.view
 import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.vitalizeme.constants.PrefConstants
 import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.ActivityOnboardingBinding
@@ -30,6 +32,15 @@ class onboarding : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
+                0
+            )
+        }
 
         val user = FirebaseAuth.getInstance().currentUser
         if(user != null){

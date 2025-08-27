@@ -56,8 +56,8 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         val height: Double? = userSP.getString(USERDATA.HEIGHT, "")?.toDouble()
         val weight: Double? = userSP.getString(USERDATA.WEIGHT, "")?.toDouble()
@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
         val workoutCount = workoutSP.getInt(WORKOUTDATA.WORKOUT_COUNT, 0)
         val KcalBurned = workoutSP.getInt(WORKOUTDATA.KCAL_COUNT, 0)
 
-        binding.min.text = (time.toDouble()/60).toString()
+        binding.min.text = (time.toDouble() / 60).toString()
         binding.kcal.text = KcalBurned.toString()
         binding.workout.text = workoutCount.toString()
 
@@ -110,11 +110,9 @@ class HomeFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { banners ->
             adapter.bannerItems = banners
         }
-        StepCounterService.Subscribe.register(object : stepCallback {
-            override fun onStepCountChange(stepCount: Int) {
-                binding.steps.text = "$stepCount"
-            }
-        })
+        StepCounterService.stepRepo.stepsLiveData.observe(viewLifecycleOwner) { stepCount ->
+            binding.steps.text = "$stepCount"
+        }
 
         if (!isServiceRunning()) {
             val intent = Intent(requireContext(), StepCounterService::class.java)
@@ -128,14 +126,20 @@ class HomeFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+
+    }
+
     override fun onPause() {
         super.onPause()
-        StepCounterService.Subscribe.unregister()
+//        StepCounterService.Subscribe.unregister()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        StepCounterService.Subscribe.unregister()
+//        StepCounterService.Subscribe.unregister()
 
     }
 

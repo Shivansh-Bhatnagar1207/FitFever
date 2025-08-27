@@ -1,20 +1,17 @@
 package com.example.vitalizeme.service
 
-import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.example.vitalizeme.FitApplication
+import androidx.lifecycle.MutableLiveData
 import com.example.vitalizeme.R
 
 class StepCounterService : Service(), SensorEventListener {
@@ -65,6 +62,10 @@ class StepCounterService : Service(), SensorEventListener {
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {}
 
+    object stepRepo{
+        val stepsLiveData = MutableLiveData<Int>()
+    }
+
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER) {
             val steps = event.values[0].toInt()
@@ -75,7 +76,7 @@ class StepCounterService : Service(), SensorEventListener {
                 initialStep = steps
             }
             val currStep = steps - initialStep
-            callback?.onStepCountChange(currStep)
+            stepRepo.stepsLiveData.postValue(currStep)
         }
 
 
@@ -88,6 +89,7 @@ class StepCounterService : Service(), SensorEventListener {
 
         fun unregister() {
             callback = null
+            Log.d("StepCounterService", "Service Unregistered")
         }
     }
 
@@ -97,5 +99,10 @@ class StepCounterService : Service(), SensorEventListener {
         sensorManager.unregisterListener(this)
         stopForeground(true)
         instance = null
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopSelf()
     }
 }
