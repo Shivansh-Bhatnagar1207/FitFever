@@ -47,7 +47,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="1dp">
 
                 <ImageView
                     android:id="@+id/ivName"
@@ -94,7 +94,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="1dp">
 
                 <ImageView
                     android:id="@+id/ivPhone"
@@ -112,7 +112,6 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_toEndOf="@id/ivPhone"
                     android:text="Name"
-                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -130,7 +129,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="1dp">
 
                 <ImageView
                     android:id="@+id/ivheight"
@@ -159,7 +158,6 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_toEndOf="@id/ivheight"
                     android:text="Name"
-                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -177,7 +175,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="1dp">
 
                 <ImageView
                     android:id="@+id/ivweight"
@@ -206,7 +204,6 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_toEndOf="@id/ivweight"
                     android:text="Name"
-                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
             </RelativeLayout>
@@ -224,7 +221,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="1dp">
 
                 <ImageView
                     android:id="@+id/ivgender"
@@ -261,7 +258,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="1dp">
 
                 <ImageView
                     android:id="@+id/ivDOB"

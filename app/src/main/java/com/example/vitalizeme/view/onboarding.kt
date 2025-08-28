@@ -25,7 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class onboarding : AppCompatActivity() {
     private lateinit var binding: ActivityOnboardingBinding
     private lateinit var sp: SharedPreferences
-    private lateinit var userId : String
+    private lateinit var userId: String
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +34,18 @@ class onboarding : AppCompatActivity() {
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACTIVITY_RECOGNITION),
-                0
-            )
-        }
+
+
+
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACTIVITY_RECOGNITION),
+            200
+        )
 
         val user = FirebaseAuth.getInstance().currentUser
-        if(user != null){
-            userId= user.uid
+        if (user != null) {
+            userId = user.uid
             val firebaseData = FirebaseFirestore
                 .getInstance()
                 .collection("User")
