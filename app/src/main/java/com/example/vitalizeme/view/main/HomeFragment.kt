@@ -128,23 +128,6 @@ class HomeFragment : Fragment() {
         return String.format("%.2f", bmi).toDouble()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        StepCounterService.Subscribe.unregister()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        StepCounterService.Subscribe.unregister()
-
-    }
-
     private fun isServiceRunning(): Boolean {
         val manager =
             requireContext().getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager

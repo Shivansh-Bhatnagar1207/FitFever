@@ -52,26 +52,27 @@ class UserActivity : AppCompatActivity() {
                 "gender" to gender,
             )
             firestore.collection("User").document(currentUser!!).set(userMap)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        sp.edit().apply {
-                            putString(USERDATA.NAME, name)
-                            putString(USERDATA.HEIGHT, height)
-                            putString(USERDATA.WEIGHT, weight)
-                            putLong(USERDATA.PHONE, phone)
-                            putString(USERDATA.DOB, DOB)
-                            putString(USERDATA.GENDER, gender)
-                            putString(USERDATA.USERID, currentUser)
-                            putBoolean(USERDATA.ISCOMPLETE, true)
-                            apply()
-                        }
-                        Toast.makeText(this, "Welcome ${name}", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Failed to save data", Toast.LENGTH_SHORT).show()
+                .addOnSuccessListener {
+                    sp.edit().apply {
+                        putString(USERDATA.NAME, name)
+                        putString(USERDATA.HEIGHT, height)
+                        putString(USERDATA.WEIGHT, weight)
+                        putLong(USERDATA.PHONE, phone)
+                        putString(USERDATA.DOB, DOB)
+                        putString(USERDATA.GENDER, gender)
+                        putString(USERDATA.USERID, currentUser)
+                        putBoolean(USERDATA.ISCOMPLETE, true)
+                        apply()
                     }
+                    Toast.makeText(this, "Welcome $name", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    e.printStackTrace() // Logcat will show the full error
+                }
+
         }
 
     }
