@@ -69,15 +69,12 @@ class HomeFragment : Fragment() {
         val workoutCount = workoutSP.getInt(WORKOUTDATA.WORKOUT_COUNT, 0)
         val KcalBurned = workoutSP.getInt(WORKOUTDATA.KCAL_COUNT, 0)
 
-        binding.min.text = (time.toDouble() / 60).toString()
+        val min = (time.toDouble() / 60)
+
+        binding.min.text = String.format("%.2f",min)
         binding.kcal.text = KcalBurned.toString()
         binding.workout.text = workoutCount.toString()
 
-
-        fun Bmical(height: Double, weight: Double): Double {
-            val bmi: Double = weight / (height * height)
-            return String.format("%.2f", bmi).toDouble()
-        }
 
         val bmi = Bmical(height!!, weight!!)
         binding.BMIText.text = bmi.toString()
@@ -124,6 +121,11 @@ class HomeFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun Bmical(height: Double, weight: Double): Double {
+        val bmi: Double = weight / (height * height)
+        return String.format("%.2f", bmi).toDouble()
     }
 
     override fun onResume() {
