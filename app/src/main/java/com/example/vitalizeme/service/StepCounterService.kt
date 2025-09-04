@@ -20,7 +20,7 @@ class StepCounterService : Service(), SensorEventListener {
     private var initialStep = -1
 
     companion object {
-        var callback: stepCallback? = null
+//        var callback: stepCallback? = null
         fun restStep(){
             instance?.initialStep = -1
         }
@@ -81,21 +81,20 @@ class StepCounterService : Service(), SensorEventListener {
 
 
     }
-
-    object Subscribe {
-        fun register(callbackImplement: stepCallback) {
-            callback = callbackImplement
-        }
-
-        fun unregister() {
-            callback = null
-            Log.d("StepCounterService", "Service Unregistered")
-        }
-    }
+//    object Subscribe {
+//        fun register(callbackImplement: stepCallback) {
+//            callback = callbackImplement
+//        }
+//
+//        fun unregister() {
+//            callback = null
+//            Log.d("StepCounterService", "Service Unregistered")
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensorManager.unregisterListener(this)
         stopForeground(true)
         instance = null

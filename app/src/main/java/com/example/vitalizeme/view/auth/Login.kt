@@ -16,6 +16,7 @@ import com.example.vitalizeme.constants.PrefConstants
 import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.FragmentLoginBinding
 import com.example.vitalizeme.model.Users
+import com.example.vitalizeme.service.OTP
 import com.example.vitalizeme.view.main.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,13 +25,20 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.concurrent.TimeUnit
 
 class Login : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+
+
+    private lateinit var otpService: OTP
 
 
     private fun firebaseAuthWithGoogle(idToken: String?) {
@@ -97,39 +105,69 @@ class Login : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
+        otpService = OTP(firebaseAuth, requireActivity())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater)
-        Log.d("CurrentUser", "${firebaseAuth.currentUser} ")
-        binding.loginbtn.setOnClickListener {
-            val email = binding.etemail.text.toString()
-            val password = binding.etpassword.text.toString()
+//        Log.d("CurrentUser", "${firebaseAuth.currentUser} ")
 
-            if (email.isEmpty() || password.isEmpty()) {
-                binding.emailLayout.error = "Email Required"
-                binding.passwordLayout.error = "Password Required"
+
+//        binding.loginbtn.setOnClickListener {
+//            val email = binding.etemail.text.toString()
+//            val password = binding.etpassword.text.toString()
+//
+//            if (email.isEmpty() || password.isEmpty()) {
+//                binding.emailLayout.error = "Email Required"
+//                binding.passwordLayout.error = "Password Required"
+//            } else {
+//                firebaseAuth.signInWithEmailAndPassword(email, password)
+//                    .addOnCompleteListener { task ->
+//                        if (task.isSuccessful) {
+//                            startActivity(Intent(requireContext(), MainActivity::class.java))
+//                            requireActivity().finish()
+//                        } else if (task.exception is FirebaseTooManyRequestsException) {
+//                            Toast.makeText(
+//                                requireContext(),
+//                                "Too many attempts. Try again later.",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+//                        } else {
+//                            Toast.makeText(requireContext(), "Failed to SignIn", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                    }
+//            }
+//        }
+
+        binding.btnSendOtp.setOnClickListener {
+            val phone = binding.etphone.text.toString().trim()
+            if (phone.isNotEmpty()) {
+                otpService.sendVerificationCode(phone) { verificationId ->
+                    Toast.makeText(requireContext(), "OTP Sent on Phone", Toast.LENGTH_SHORT).show()
+                }
             } else {
-                firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                            requireActivity().finish()
-                        } else if (task.exception is FirebaseTooManyRequestsException) {
-                            Toast.makeText(
-                                requireContext(),
-                                "Too many attempts. Try again later.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } else {
-                            Toast.makeText(requireContext(), "Failed to SignIn", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
+                Toast.makeText(requireContext(), "Enter Phone Number", Toast.LENGTH_SHORT).show()
+                binding.phoneLayout.error = "Enter Phone"
             }
+        }
 
+        binding.btnVerifyOtp.setOnClickListener {
+            val otp = binding.etotp.text.toString().trim()  // ✅ fixed
+            if (otp.isNotEmpty()) {
+                otpService.verifyOTP(otp) { success ->
+                    if (success) {
+                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        requireActivity().finish()
+                    } else {
+                        Toast.makeText(requireContext(), "Invalid OTP ❌", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(requireContext(), "Enter OTP", Toast.LENGTH_SHORT).show()
+            }
         }
         binding.signupLink.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_signUp)

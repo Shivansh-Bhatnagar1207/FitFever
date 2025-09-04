@@ -2,3 +2,6 @@
 
 
 /google-services.json
+/src/main/java/com/example/vitalizeme/model/WorkoutDAO
+/src/main/java/com/example/vitalizeme/model/WorkoutDB
+/src/main/java/com/example/vitalizeme/repository/WorkoutRepository

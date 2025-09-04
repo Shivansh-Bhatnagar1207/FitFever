@@ -15,3 +15,6 @@
 local.properties
 
 /app/google-services.json
+/app/src/main/java/com/example/vitalizeme/model/WorkoutDAO
+/app/src/main/java/com/example/vitalizeme/model/WorkoutDB
+/app/src/main/java/com/example/vitalizeme/repository/WorkoutRepository

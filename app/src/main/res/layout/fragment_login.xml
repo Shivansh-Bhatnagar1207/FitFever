@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".view.auth.Login">
 
-
+    <!-- Header -->
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="150dp">
@@ -29,54 +29,73 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
+    <!-- Phone Number -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailLayout"
+        android:id="@+id/phoneLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="Phone Number"
         android:paddingHorizontal="50dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etemail"
+            android:id="@+id/etphone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
-            android:inputType="textEmailAddress" />
+            android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- OTP -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordLayout"
+        android:id="@+id/otpLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="password"
-        android:paddingHorizontal="50dp"
-        app:passwordToggleEnabled="true">
+        android:hint="Enter OTP"
+        android:paddingHorizontal="50dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etpassword"
+            android:id="@+id/etotp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
-            android:inputType="textPassword" />
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Send OTP -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginbtn"
+        android:id="@+id/btnSendOtp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="100dp"
-        android:layout_marginVertical="20dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_btn"
         android:backgroundTint="?attr/colorPrimary"
         android:padding="20dp"
-        android:text="Login"
+        android:text="Send OTP"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
+    <!-- Verify OTP -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnVerifyOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_btn"
+        android:backgroundTint="@color/teal_700"
+        android:padding="20dp"
+        android:text="Verify OTP"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Signup link -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -95,18 +114,14 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_margin="30dp"
         android:background="@android:color/darker_gray" />
 
-
     <com.google.android.gms.common.SignInButton
         android:id="@+id/magicbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-
 </LinearLayout>
