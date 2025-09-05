@@ -1,127 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".view.auth.Login">
 
     <!-- Header -->
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/headerImage"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fitness1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
-        android:layout_height="150dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Log into FitFever"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/headerImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView"
+    <!-- Card container -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/formCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerImage">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/fitness1" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="120dp"
-            android:text="Log into FitFever"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:orientation="vertical"
+            android:padding="24dp">
 
-    <!-- Phone Number -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Phone Number"
-        android:paddingHorizontal="50dp">
+            <!-- Phone Number -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etphone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:inputType="phone" />
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etphone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- OTP -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/otpLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter OTP"
-        android:paddingHorizontal="50dp">
+            <!-- OTP -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Enter OTP"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etotp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <!-- Buttons -->
+            <LinearLayout
+                android:id="@+id/otpContainer"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:columnCount="6"
+                android:gravity="center">
 
-    <!-- Send OTP -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnSendOtp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_btn"
-        android:backgroundTint="?attr/colorPrimary"
-        android:padding="20dp"
-        android:text="Send OTP"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
 
-    <!-- Verify OTP -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnVerifyOtp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_btn"
-        android:backgroundTint="@color/teal_700"
-        android:padding="20dp"
-        android:text="Verify OTP"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otp1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textSize="10sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Signup link -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don't have an account?" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otp2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textSize="10sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/signupLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:text="Sign Up"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold" />
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_margin="30dp"
-        android:background="@android:color/darker_gray" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otp3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textSize="10sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otp4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textSize="10sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otp5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textSize="10sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <!---->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otp6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:textSize="10sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSendOtp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rounded_btn"
+                android:backgroundTint="?attr/colorPrimary"
+                android:text="Send OTP"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnVerifyOtp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_btn"
+                android:backgroundTint="?attr/colorPrimary"
+                android:text="Verify OTP"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Google Sign-In -->
     <com.google.android.gms.common.SignInButton
         android:id="@+id/magicbtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/formCard" />
+</androidx.constraintlayout.widget.ConstraintLayout>

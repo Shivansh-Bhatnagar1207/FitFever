@@ -1,18 +1,23 @@
 package com.example.vitalizeme.view.auth
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.Constraints
 import com.example.vitalizeme.constants.PrefConstants
 import com.example.vitalizeme.constants.USERDATA
 import com.example.vitalizeme.databinding.ActivityUserBinding
 import com.example.vitalizeme.view.main.MainActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 class UserActivity : AppCompatActivity() {
@@ -28,7 +33,15 @@ class UserActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         sp = this.getSharedPreferences(PrefConstants.USER, MODE_PRIVATE)
 
+
+        forminflater()
+
         val currentUser = FirebaseAuth.getInstance().currentUser?.uid
+
+
+        binding.etDOB.setOnClickListener {
+            showDatePicker(binding.etDOB)
+        }
 
         binding.loginbtn.setOnClickListener {
             val name = binding.etname.text.toString()
@@ -76,4 +89,36 @@ class UserActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun forminflater() {
+        binding.apply {
+            etname.setText(sp.getString(USERDATA.NAME, ""))
+            etHeight.setText(sp.getString(USERDATA.HEIGHT, ""))
+            etWeight.setText(sp.getString(USERDATA.WEIGHT, ""))
+            etphone.setText(sp.getLong(USERDATA.PHONE, 0).takeIf { it != 0L }?.toString() ?: "")
+            etDOB.setText(sp.getString(USERDATA.DOB, ""))
+        }
+    }
+
+
+    private fun showDatePicker(etDob: TextInputEditText) {
+        val calandar = Calendar.getInstance()
+        val year = calandar.get(Calendar.YEAR)
+        val month = calandar.get(Calendar.MONTH)
+        val day = calandar.get(Calendar.DAY_OF_MONTH)
+
+
+        val datepicker = DatePickerDialog(
+            this, { _, selectedYear, selectedMonth, selectedDay ->
+                val date = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                etDob.setText(date)
+            },
+            year,
+            month,
+            day
+        )
+
+        datepicker.show()
+    }
+
 }

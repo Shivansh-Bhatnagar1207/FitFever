@@ -3,6 +3,8 @@ package com.example.vitalizeme.view.auth
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -154,8 +156,15 @@ class Login : Fragment() {
             }
         }
 
+        setupOtpInputs()
         binding.btnVerifyOtp.setOnClickListener {
-            val otp = binding.etotp.text.toString().trim()  // ✅ fixed
+//            val otp = binding.etotp.text.toString().trim()  // ✅ fixed
+            val otp = binding.otp1.text.toString() +
+                    binding.otp2.text.toString() +
+                    binding.otp3.text.toString() +
+                    binding.otp4.text.toString() +
+                    binding.otp5.text.toString() +
+                    binding.otp6.text.toString()
             if (otp.isNotEmpty()) {
                 otpService.verifyOTP(otp) { success ->
                     if (success) {
@@ -169,9 +178,12 @@ class Login : Fragment() {
                 Toast.makeText(requireContext(), "Enter OTP", Toast.LENGTH_SHORT).show()
             }
         }
-        binding.signupLink.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_signUp)
-        }
+//        binding.signupLink.setOnClickListener {
+//            findNavController().navigate(R.id.action_login_to_signUp)
+//        }
+
+
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.webClientId)).requestEmail().build()
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
@@ -190,10 +202,30 @@ class Login : Fragment() {
         binding.magicbtn.setOnClickListener {
             clientLauncher.launch(googleSignInClient.signInIntent)
         }
-
-
-
         return binding.root
     }
+
+    private fun setupOtpInputs() {
+        val otpFields = listOf(
+            binding.otp1, binding.otp2, binding.otp3,
+            binding.otp4, binding.otp5, binding.otp6
+        )
+
+        for (i in otpFields.indices) {
+            otpFields[i].addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable?) {
+                    if (s?.length == 1 && i < otpFields.size - 1) {
+                        otpFields[i + 1].requestFocus()
+                    } else if (s?.isEmpty() == true && i > 0) {
+                        otpFields[i - 1].requestFocus()
+                    }
+                }
+            })
+        }
+    }
+
 
 }
